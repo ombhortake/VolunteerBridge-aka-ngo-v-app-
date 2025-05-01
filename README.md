@@ -131,12 +131,12 @@ The application uses an SQLite database with the following main tables:
 Contributions, issues, and feature requests are welcome. Please feel free to fork the repository, make changes, and submit a pull request, or open an issue to report bugs or suggest improvements.
 
 ## License
+This project is currently not licensed for open distribution.
 
-*(Optional: Choose a license if you want to make your code open source)*
+XD idk how licenses work ill look into it. 
 
-Example: This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details (you would need to create this file and add the MIT license text).
-
-Or: This project is currently not licensed for open distribution.
+##NOTE
+I dont think ill continue this website further as its just a demo but if anyone wants they can
 
 ## Contact
 
