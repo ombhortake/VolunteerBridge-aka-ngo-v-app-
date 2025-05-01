@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Volunteering History - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+     <h2 class="mb-0"><i class="bi bi-clock-history me-2"></i>Your Volunteering History</h2>
+     <a href="{{ url_for('volunteer_dashboard') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+</div>
+
+{% if history %}
+    <div class="stats-container mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6 col-lg-4">
+                 <div class="stat-box">
+                    <div class="stat-number">{{ completed_count }}</div>
+                    <div class="stat-label">Tasks Completed</div>
+                </div>
+            </div>
+             <div class="col-md-6 col-lg-4">
+                 <div class="stat-box">
+                    <div class="stat-number">{{ ngos_helped_count }}</div>
+                    <div class="stat-label">Unique NGOs Helped</div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center text-lg-start pt-3 pt-lg-0">
+                 <p class="text-muted fst-italic mb-0">Thank you for your contributions!</p>
+             </div>
+         </div>
+     </div>
+
+    <div class="list-group">
+        {% for task in history %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 history-card p-3 rounded">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-success">{{ task.title }}</h5>
+                    <small class="text-muted">Completed: {{ task.completion_date.split(' ')[0] }}</small> <!-- Show Date Only -->
+                </div>
+                <p class="mb-1"><strong>NGO:</strong> {{ task.ngo_name }}</p>
+                <p class="mb-1 text-muted">{{ task.description }}</p>
+                 <span class="badge bg-completed mt-2"><i class="bi bi-check-circle-fill me-1"></i>Completed</span>
+            </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <div class="empty-state">
+        <i class="bi bi-calendar2-x fs-1 mb-3 d-block"></i>
+        <h3>No Volunteering History Yet</h3>
+        <p>Once you complete tasks, they will appear here. Ready to make an impact?</p>
+        <a href="{{ url_for('volunteer_opportunities') }}" class="btn btn-success mt-2"><i class="bi bi-search me-1"></i> Find Opportunities</a>
+    </div>
+{% endif %}
+{% endblock %}

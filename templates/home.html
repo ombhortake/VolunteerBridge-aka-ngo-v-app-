@@ -1,0 +1,319 @@
+{% extends 'base.html' %} {# MUST be line 1 #}
+
+{% block title %}Home - NGO-Volunteer Connect{% endblock %} {# Sets the page title #}
+
+{% block head %}
+<style>
+    body {
+        background: url('https://i.pinimg.com/736x/54/ae/23/54ae238def7ffdf7791add73e37e0fc9.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: -1;
+    }
+
+    .hero {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 4rem 2rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        margin-bottom: 4rem;
+        backdrop-filter: blur(5px);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero h1 {
+        color: white;
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+        color: white;
+        font-size: 1.2rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        margin-bottom: 2rem;
+    }
+
+    .hero .btn {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        font-size: 1.1rem;
+        padding: 0.8rem 2rem;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        padding: 2rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1));
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-card:hover::before {
+        opacity: 1;
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-card h3 {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .feature-card p {
+        color: #666;
+    }
+
+    .opportunities-section {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin: 4rem 0;
+    }
+
+    .opportunity-card {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .opportunity-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .opportunity-icon {
+        font-size: 2.5rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+
+    .opportunity-title {
+        color: #333;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .opportunity-description {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .section-title {
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 992px) {
+        .hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+        }
+        
+        .opportunities-section {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .opportunities-section {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .cta-section {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 30px;
+        padding: 4rem 2rem;
+        text-align: center;
+        color: white;
+        margin: 4rem 0;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+</style>
+{% endblock %}
+
+{% block content %} {# All content goes inside this block #}
+
+<div class="hero" data-aos="fade-up">
+    <div class="hero-content text-center">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up" data-aos-delay="100">Connect. Volunteer. Make Impact.</h1>
+        <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">The bridge between Non-Governmental Organizations seeking help and passionate volunteers ready to contribute their time and skills.</p>
+        {% if not session.user_id %}
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center" data-aos="fade-up" data-aos-delay="300">
+                <a href="{{ url_for('login') }}" class="btn btn-success btn-lg px-4">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-person-plus me-2"></i>Register
+                </a>
+            </div>
+        {% else %}
+             <div class="d-grid gap-3 d-sm-flex justify-content-sm-center" data-aos="fade-up" data-aos-delay="300">
+                 {% if session.user_type == 'ngo' %}
+                    <a href="{{ url_for('ngo_dashboard') }}" class="btn btn-success btn-lg px-4">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                    </a>
+                 {% else %}
+                     <a href="{{ url_for('volunteer_dashboard') }}" class="btn btn-success btn-lg px-4">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                     </a>
+                 {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="text-center section-title" data-aos="fade-up">Volunteer Opportunities</h2>
+<div class="opportunities-section" data-aos="fade-up">
+    <div class="opportunity-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="opportunity-icon">
+            <i class="bi bi-tree-fill"></i>
+        </div>
+        <h3 class="opportunity-title">Environmental Conservation</h3>
+        <p class="opportunity-description">Join environmental initiatives, tree planting drives, and wildlife conservation projects to protect our planet.</p>
+    </div>
+    <div class="opportunity-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="opportunity-icon">
+            <i class="bi bi-book-fill"></i>
+        </div>
+        <h3 class="opportunity-title">Education & Mentoring</h3>
+        <p class="opportunity-description">Help students excel in their studies, mentor young professionals, and contribute to educational programs.</p>
+    </div>
+    <div class="opportunity-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="opportunity-icon">
+            <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <h3 class="opportunity-title">Healthcare Support</h3>
+        <p class="opportunity-description">Assist in healthcare awareness campaigns, support medical camps, and help in community health initiatives.</p>
+    </div>
+</div>
+
+<h2 class="text-center section-title" data-aos="fade-up">How It Works</h2>
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    {# (Feature Sections as before) #}
+    <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-building"></i>
+            </div>
+            <h3 class="fs-4 fw-semibold mb-3">For NGOs</h3>
+            <p class="text-muted">Easily post tasks, find dedicated volunteers based on skills, manage assignments, and track the progress of your crucial projects.</p>
+        </div>
+    </div>
+    <div class="col" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <h3 class="fs-4 fw-semibold mb-3">For Volunteers</h3>
+            <p class="text-muted">Discover meaningful opportunities aligned with your interests, apply your skills for impactful causes, and build your volunteering experience.</p>
+        </div>
+    </div>
+    <div class="col" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+            <h3 class="fs-4 fw-semibold mb-3">Simple & Effective</h3>
+            <p class="text-muted">A user-friendly platform designed for seamless communication and efficient coordination, maximizing impact for everyone.</p>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section" data-aos="fade-up">
+    <div class="cta-content">
+        <h2 class="fw-bold mb-3">Ready to Make a Difference?</h2>
+        <p class="lead mb-4">Join thousands of volunteers and NGOs making an impact in communities around the world.</p>
+        {% if not session.user_id %}
+            <a href="{{ url_for('register') }}" class="btn btn-custom cta-button">
+                <i class="bi bi-person-plus me-2"></i>Get Started Today
+            </a>
+        {% else %}
+            {% if session.user_type == 'ngo' %}
+                <a href="{{ url_for('ngo_dashboard') }}" class="btn btn-custom cta-button">
+                    <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                </a>
+            {% else %}
+                <a href="{{ url_for('volunteer_dashboard') }}" class="btn btn-custom cta-button">
+                    <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %} {# End of content block #}

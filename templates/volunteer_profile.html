@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Volunteer Profile - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+        <div class="form-container">
+            <h2 class="mb-1"><i class="bi bi-person-badge me-2"></i>Your Volunteer Profile</h2>
+            <p class="text-muted mb-4">Keep your information updated to help NGOs find the right match.</p>
+
+            <form method="post">
+                 <fieldset class="mb-4 p-3 border rounded">
+                    <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Personal Info (Read-only)</legend>
+                     <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" id="name" class="form-control" value="{{ volunteer.name }}" readonly disabled>
+                    </div>
+                     <div class="mb-0">
+                        <label for="email" class="form-label">Registered Email</label>
+                        <input type="email" id="email" class="form-control" value="{{ volunteer.email }}" readonly disabled>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4 p-3 border rounded">
+                    <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Contact & Availability</legend>
+                     <div class="mb-3">
+                        <label for="contact" class="form-label">Contact Number / Method</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{ volunteer.contact or '' }}" placeholder="e.g., Your phone number or preferred contact">
+                    </div>
+                    <div class="mb-0">
+                        <label for="availability" class="form-label">Your Availability</label>
+                        <textarea class="form-control" id="availability" name="availability" rows="2" placeholder="E.g., Weekends, Monday evenings, Flexible during summer, etc.">{{ volunteer.availability or '' }}</textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4 p-3 border rounded">
+                    <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Skills & Interests</legend>
+                     <div class="mb-3">
+                        <label for="skills" class="form-label">Your Skills</label>
+                        <textarea class="form-control" id="skills" name="skills" rows="3" placeholder="List skills relevant to volunteering (e.g., Teaching, Web Design, Event Planning, Cooking, Driving License, First Aid)">{{ volunteer.skills or '' }}</textarea>
+                    </div>
+                    <div class="mb-0">
+                        <label for="interests" class="form-label">Volunteering Interests</label>
+                        <textarea class="form-control" id="interests" name="interests" rows="3" placeholder="What causes or types of work are you passionate about? (e.g., Environment, Education, Animal Welfare, Community Support)">{{ volunteer.interests or '' }}</textarea>
+                    </div>
+                </fieldset>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-save me-1"></i> Update Profile</button>
+                    <a href="{{ url_for('volunteer_dashboard') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

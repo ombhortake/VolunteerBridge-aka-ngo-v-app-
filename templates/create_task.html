@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Task - {{ super() }}{% endblock %}
+
+{% block head %}
+<!-- Add Three.js for 3D animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Add GSAP for smooth animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+<style>
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+        transform: translateY(-5px);
+    }
+
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .btn-success {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-outline-secondary {
+        border-radius: 12px;
+        padding: 12px 30px;
+    }
+
+    .task-icon {
+        font-size: 3rem;
+        background: linear-gradient(45deg, #28a745, #20c997);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+
+    .animated-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="animated-bg"></div>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="form-container">
+            <div class="floating-shapes" id="floatingShapes"></div>
+            <div class="text-center mb-4">
+                <div class="task-icon">
+                    <i class="bi bi-journal-plus"></i>
+                </div>
+                <h2 class="mt-2 fw-bold">Create New Task</h2>
+                <p class="text-muted">Describe the task you need help with.</p>
+            </div>
+            <form method="post" class="needs-validation" novalidate>
+                <div class="mb-4">
+                    <label for="title" class="form-label fw-bold">Task Title <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg" id="title" name="title" required 
+                           placeholder="e.g., Community Garden Setup Day">
+                    <div class="invalid-feedback">Please provide a task title.</div>
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="form-label fw-bold">Task Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control form-control-lg" id="description" name="description" rows="5" required 
+                              placeholder="Provide details about the task, required skills (if any), location, time commitment, etc."></textarea>
+                    <div class="invalid-feedback">Please provide a task description.</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="bi bi-check-circle-fill me-2"></i> Create Task
+                    </button>
+                    <a href="{{ url_for('ngo_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i> Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialize Three.js scene
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+const container = document.getElementById('floatingShapes');
+renderer.setSize(container.offsetWidth, container.offsetHeight);
+container.appendChild(renderer.domElement);
+
+// Create floating shapes
+const shapes = [];
+const geometry = new THREE.IcosahedronGeometry(1, 0);
+const material = new THREE.MeshPhongMaterial({
+    color: 0x28a745,
+    transparent: true,
+    opacity: 0.3,
+    wireframe: true
+});
+
+for (let i = 0; i < 5; i++) {
+    const shape = new THREE.Mesh(geometry, material);
+    shape.position.set(
+        Math.random() * 10 - 5,
+        Math.random() * 10 - 5,
+        Math.random() * 10 - 5
+    );
+    shapes.push(shape);
+    scene.add(shape);
+}
+
+// Add lights
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(0, 0, 5);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0x404040));
+
+camera.position.z = 5;
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+    shapes.forEach(shape => {
+        shape.rotation.x += 0.01;
+        shape.rotation.y += 0.01;
+    });
+    renderer.render(scene, camera);
+}
+
+animate();
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+});
+
+// Form validation
+(function () {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

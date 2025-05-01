@@ -1,0 +1,92 @@
+{% extends 'base.html' %} {# <--- THIS MUST BE THE VERY FIRST LINE #}
+
+{% block title %}Volunteer Dashboard - {{ super() }}{% endblock %}
+
+{% block content %} {# <--- ALL CONTENT MUST BE INSIDE THIS BLOCK #}
+<div class="dashboard-section">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+         <h2 class="mb-0"><i class="bi bi-speedometer2 me-2"></i>Volunteer Dashboard</h2>
+         <div class="d-flex gap-2 flex-wrap">
+             <a href="{{ url_for('volunteer_opportunities') }}" class="btn btn-outline-success btn-sm"><i class="bi bi-search me-1"></i> Find Opportunities</a>
+             <a href="{{ url_for('volunteer_history') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history me-1"></i> View History</a>
+             <a href="{{ url_for('volunteer_profile') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-person-gear me-1"></i> Edit Profile</a>
+         </div>
+    </div>
+
+    <!-- Assigned Tasks Section -->
+    <div class="mb-5">
+        <h3 class="fs-5 mb-3 fw-semibold"><i class="bi bi-pin-angle-fill text-success me-1"></i> Your Assigned Tasks</h3>
+        {% if assigned_tasks %}
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for task in assigned_tasks %}
+                    <div class="col d-flex"> {# Added d-flex for consistent height #}
+                        <div class="card h-100 task-card w-100"> {# Added w-100 #}
+                             <div class="card-header d-flex justify-content-between align-items-center">
+                                 <span class="fw-medium">{{ task['title'] }}</span> {# Made title bold #}
+                                 <span class="badge rounded-pill
+                                    {% if task['status'] == 'Completed' %}bg-completed
+                                    {% elif task['status'] == 'Assigned' %}bg-info text-dark
+                                    {% else %}bg-pending{% endif %}">
+                                    {{ task['status'] }}
+                                </span>
+                             </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-subtitle mb-2 text-muted small"><i class="bi bi-building me-1"></i>NGO: {{ task['ngo_name'] }}</h6> {# Made NGO smaller #}
+                                <p class="card-text flex-grow-1">{{ task['description'] }}</p>
+                                {% if task['status'] != 'Completed' %}
+                                    <form method="post" action="{{ url_for('complete_task', task_id=task['id']) }}" class="mt-auto text-end pt-2"> {# Added pt-2 #}
+                                        <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg me-1"></i> Mark as Completed</button>
+                                    </form>
+                                {% else %}
+                                     <div class="mt-auto text-end pt-2"> {# Added placeholder for alignment #}
+                                        <span class="text-muted small fst-italic">Task Completed</span>
+                                     </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state mt-4"> {# Added mt-4 #}
+                 <i class="bi bi-journal-check fs-1 mb-3 d-block"></i>
+                 <h3>No Assigned Tasks</h3>
+                 <p>You haven't accepted any tasks yet, or all your accepted tasks are completed.</p>
+                 <a href="{{ url_for('volunteer_opportunities') }}" class="btn btn-success mt-2"><i class="bi bi-search me-1"></i> Find Opportunities</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Available Tasks Section -->
+    <div>
+        <h3 class="fs-5 mb-3 fw-semibold"><i class="bi bi-binoculars-fill text-success me-1"></i> Available Opportunities</h3>
+        {% if available_tasks %}
+             <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for task in available_tasks %}
+                    <div class="col d-flex"> {# Added d-flex for consistent height #}
+                         <div class="card h-100 opportunity-card w-100"> {# Added w-100 #}
+                             <div class="card-header fw-medium">{{ task['title'] }}</div> {# Made title bold #}
+                             <div class="card-body d-flex flex-column">
+                                <h6 class="card-subtitle mb-2 text-muted small"><i class="bi bi-building me-1"></i>NGO: {{ task['ngo_name'] }}</h6> {# Made NGO smaller #}
+                                <p class="card-text flex-grow-1">{{ task['description'] }}</p>
+                                <form method="post" action="{{ url_for('accept_task', task_id=task['id']) }}" class="mt-auto text-end pt-2"> {# Added pt-2 #}
+                                     <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-hand-thumbs-up-fill me-1"></i> Accept Task</button>
+                                </form>
+                            </div>
+                             <div class="card-footer text-muted small"> {# Made footer text smaller #}
+                                Status: <span class="badge bg-pending">Open</span>
+                             </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+             <div class="empty-state mt-4"> {# Added mt-4 #}
+                 <i class="bi bi-emoji-smile fs-1 mb-3 d-block"></i>
+                 <h3>All Caught Up!</h3>
+                 <p>There are no new tasks available right now. Check back later!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} {# <--- END OF THE CONTENT BLOCK #}

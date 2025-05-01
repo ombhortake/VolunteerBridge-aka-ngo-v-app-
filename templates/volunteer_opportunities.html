@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Volunteer Opportunities - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h2 class="mb-0"><i class="bi bi-search me-2"></i>Available Opportunities</h2>
+    <a href="{{ url_for('volunteer_dashboard') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+</div>
+
+{% if opportunities %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for task in opportunities %}
+            <div class="col">
+                <div class="card h-100 opportunity-card">
+                     <div class="card-header">
+                         {{ task.title }}
+                     </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-building me-1"></i>NGO: {{ task.ngo_name }}</h6>
+                        {% if task.ngo_mission %}
+                        <p class="card-text small fst-italic mb-2">Mission: {{ task.ngo_mission|truncate(100) }}</p>
+                        {% endif %}
+                        <p class="card-text flex-grow-1"><strong>Task:</strong> {{ task.description }}</p>
+                        <div class="mt-auto text-end">
+                           <form method="post" action="{{ url_for('accept_task', task_id=task.id) }}">
+                                <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-hand-thumbs-up-fill me-1"></i> Accept Task</button>
+                           </form>
+                        </div>
+                    </div>
+                     <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                       <span>Status: <span class="badge bg-pending">Open</span></span>
+                       <!-- Optionally add posting date if available -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <i class="bi bi-emoji-smile fs-1 mb-3 d-block"></i>
+        <h3>No Opportunities Available</h3>
+        <p>All tasks are currently assigned or none have been posted. Please check back later!</p>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}NGO Profile - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+        <div class="form-container">
+            <h2 class="mb-1"><i class="bi bi-building me-2"></i>NGO Profile</h2>
+            <p class="text-muted mb-4">Update your organization's information for volunteers.</p>
+
+            <form method="post">
+                <fieldset class="mb-4 p-3 border rounded">
+                    <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Organization Info (Read-only)</legend>
+                     <div class="mb-3">
+                        <label for="name" class="form-label">Organization Name</label>
+                        <input type="text" id="name" class="form-control" value="{{ ngo.name }}" readonly disabled>
+                    </div>
+                     <div class="mb-0">
+                        <label for="email" class="form-label">Registered Email</label>
+                        <input type="email" id="email" class="form-control" value="{{ ngo.email }}" readonly disabled>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4 p-3 border rounded">
+                     <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Details & Mission</legend>
+                     <div class="mb-3">
+                        <label for="description" class="form-label">Organization Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Provide a brief description of your organization's work and impact.">{{ ngo.description or '' }}</textarea>
+                    </div>
+                    <div class="mb-0">
+                        <label for="mission" class="form-label">Mission Statement</label>
+                        <textarea class="form-control" id="mission" name="mission" rows="3" placeholder="What is your organization's core mission?">{{ ngo.mission or '' }}</textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4 p-3 border rounded">
+                    <legend class="fs-6 fw-semibold text-muted float-none w-auto px-2">Contact Information</legend>
+                     <div class="mb-0">
+                        <label for="contact" class="form-label">Public Contact Details</label>
+                        <textarea class="form-control" id="contact" name="contact" rows="3" placeholder="Provide contact information for volunteers (e.g., public phone, address, website link)">{{ ngo.contact or '' }}</textarea>
+                    </div>
+                </fieldset>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-save me-1"></i> Update Profile</button>
+                    <a href="{{ url_for('ngo_dashboard') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
